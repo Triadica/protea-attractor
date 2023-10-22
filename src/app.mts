@@ -3,7 +3,7 @@ import spriteWGSL from "../shaders/sprite.wgsl?raw";
 import computeAttractor from "../shaders/compute-attractor.wgsl?raw";
 
 export let loadRenderer = async (canvas: HTMLCanvasElement) => {
-  let seedSize = 1600000;
+  let seedSize = 2000000;
 
   let renderFrame = await createRenderer(
     canvas,
@@ -36,10 +36,10 @@ function makeSeed(numParticles: number, scale: number): Float32Array {
 
   for (let i = 0; i < numParticles; ++i) {
     let b = 8 * i;
-    buf[b + 0] = Math.random() * 0.8;
-    buf[b + 1] = Math.random() * 1.8;
-    buf[b + 2] = Math.random() * 0.8;
-    buf[b + 3] = Math.random() * 0.8; // ages
+    buf[b + 0] = rand_middle(4.8);
+    buf[b + 1] = rand_middle(4.8);
+    buf[b + 2] = rand_middle(4.8);
+    buf[b + 3] = rand_middle(0.8); // ages
     buf[b + 4] = 0;
     buf[b + 5] = 0;
     buf[b + 6] = 0;
@@ -53,8 +53,8 @@ function loadParams(): number[] {
   return [
     0.04, // deltaT
     0.06, // height
-    0.008, // width
-    0.9, // opacity
+    0.004, // width
+    0.99, // opacity
   ];
 }
 
