@@ -67,12 +67,14 @@ struct VertexOutput {
 
 @vertex
 fn vert_main(
-  @location(0) position: vec3<f32>,
+  @location(0) position0: vec3<f32>,
   @location(1) ages: f32,
-  @location(2) prev_pos: vec3<f32>,
+  @location(2) prev_pos0: vec3<f32>,
   @location(3) travel: f32,
   @location(4) idx: u32,
 ) -> VertexOutput {
+  let position = position0 * 8.;
+  let prev_pos = prev_pos0 * 8.;
   var pos: vec3<f32>;
   let v0 = position - prev_pos;
   var prev_position = prev_pos;
@@ -110,8 +112,12 @@ fn vert_main(
   let scale: f32 = 0.002;
 
   output.position = vec4(p*scale, 1.0);
-  let c3: vec3<f32> = hsl(fract(travel/100.), 0.8, fract(0.9 - ages * 0.0002));
-  output.color = vec4(c3, params.opacity * 0.8);
+  // let c3: vec3<f32> = hsl(fract(travel/100.), 0.8, fract(0.9 - ages * 0.0002));
+  // let c3: vec3<f32> = hsl(0.24, 0.8, 0.7 + 0.3 * sin(travel * 0.2));
+  // let c3 = hsl(0.24, 0.99, 0.99 - dim);
+  // let c3 = vec3<f32>(0.99, 0.94, 0.2) * (1. - ages * 0.01);
+  let c3: vec3<f32> = hsl(fract(travel * 0.000002 + 0.1), 0.998, 0.7- ages*0.002);
+  output.color = vec4(c3, params.opacity * (1.2 - ages * 0.03));
   return output;
 }
 

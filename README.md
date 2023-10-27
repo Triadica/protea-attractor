@@ -1,7 +1,5 @@
-### Protea Fireworks
+### Protea Attractor
 
-> Compute boids with Triadica controls in WebGPU
+> Attractors demo split out from Protea repo
 
-Previews https://r.tiye.me/Triadica/protea/
-
-https://webgpu.art/protea-fireworks/
+Previews https://webgpu.art/protea-attractor/
