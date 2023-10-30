@@ -1,9 +1,9 @@
 import { createRenderer, resetCanvasSize } from "@triadica/protea";
-import attractorSprite from "../shaders/attractor-sprite.wgsl?raw";
-import attractorCompute from "../shaders/attractor-compute.wgsl?raw";
+import fractalSprite from "../shaders/fractal-sprite.wgsl?raw";
+import fractalCompute from "../shaders/fractal-compute.wgsl?raw";
 
-export let loadAttractorRenderer = async (canvas: HTMLCanvasElement) => {
-  let seedSize = 2000000;
+export let loadFractalRenderer = async (canvas: HTMLCanvasElement) => {
+  let seedSize = 6000;
 
   let renderFrame = await createRenderer(
     canvas,
@@ -11,14 +11,14 @@ export let loadAttractorRenderer = async (canvas: HTMLCanvasElement) => {
       seedSize,
       seedData: makeSeed(seedSize, 0),
       params: loadParams(),
-      computeShader: attractorCompute,
+      computeShader: fractalCompute,
     },
     {
       vertexCount: 1,
       vertexData: loadVertex(),
       indexData: [0, 1, 2, 1, 2, 3],
       vertexBufferLayout: vertexBufferLayout,
-      renderShader: attractorSprite,
+      renderShader: fractalSprite,
       // topology: "line-list",
       bgColor: [0.1, 0.0, 0.2, 1.0],
     }

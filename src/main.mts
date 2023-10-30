@@ -1,8 +1,18 @@
 import { setupInitials } from "@triadica/protea";
 
-import { loadRenderer } from "./attractor.mjs";
+import { loadAttractorRenderer } from "./attractor.mjs";
+import { loadFractalRenderer } from "./fractal.mjs";
 
-let instanceRenderer: Awaited<ReturnType<Awaited<typeof loadRenderer>>>;
+const paramsString = location.search.slice(1);
+const searchParams = new URLSearchParams(paramsString);
+
+let shape = (searchParams.get("shape") || "attractor") as
+  | "attractor"
+  | "fractal";
+
+let instanceRenderer: Awaited<
+  ReturnType<Awaited<typeof loadAttractorRenderer>>
+>;
 
 let canvas = document.querySelector("#canvas-container") as HTMLCanvasElement;
 
@@ -11,7 +21,11 @@ window.__skipComputing = false;
 window.onload = async () => {
   await setupInitials(canvas);
 
-  instanceRenderer = await loadRenderer(canvas);
+  if (shape === "fractal") {
+    instanceRenderer = await loadFractalRenderer(canvas);
+  } else {
+    instanceRenderer = await loadAttractorRenderer(canvas);
+  }
 
   let t = 0;
   let renderer = () => {
@@ -28,10 +42,16 @@ window.onload = async () => {
 };
 
 if (import.meta.hot) {
-  import.meta.hot.accept("./app", async (newModule) => {
-    if (newModule) {
-      // newModule is undefined when SyntaxError happened
-      instanceRenderer = await newModule.loadRenderer(canvas);
+  // newModule is undefined when SyntaxError happened
+  import.meta.hot.accept("./attractor.mjs", async (newModule) => {
+    if (newModule && shape === "attractor") {
+      instanceRenderer = await newModule.loadAttractorRenderer(canvas);
+    }
+  });
+
+  import.meta.hot.accept("./fractal.mjs", async (newModule) => {
+    if (newModule && shape === "fractal") {
+      instanceRenderer = await newModule.loadFractalRenderer(canvas);
     }
   });
 }
