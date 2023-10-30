@@ -1,6 +1,6 @@
 import { createRenderer, resetCanvasSize } from "@triadica/protea";
-import spriteWGSL from "../shaders/sprite.wgsl?raw";
-import computeAttractor from "../shaders/compute-attractor.wgsl?raw";
+import attractorSprite from "../shaders/attractor-sprite.wgsl?raw";
+import attractorCompute from "../shaders/attractor-compute.wgsl?raw";
 
 export let loadRenderer = async (canvas: HTMLCanvasElement) => {
   let seedSize = 2000000;
@@ -11,14 +11,14 @@ export let loadRenderer = async (canvas: HTMLCanvasElement) => {
       seedSize,
       seedData: makeSeed(seedSize, 0),
       params: loadParams(),
-      computeShader: computeAttractor,
+      computeShader: attractorCompute,
     },
     {
       vertexCount: 1,
       vertexData: loadVertex(),
       indexData: [0, 1, 2, 1, 2, 3],
       vertexBufferLayout: vertexBufferLayout,
-      renderShader: spriteWGSL,
+      renderShader: attractorSprite,
       // topology: "line-list",
       bgColor: [0.1, 0.0, 0.2, 1.0],
     }

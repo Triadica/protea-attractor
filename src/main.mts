@@ -1,8 +1,6 @@
-import { renderControl, startControlLoop } from "@triadica/touch-control";
-
 import { setupInitials } from "@triadica/protea";
 
-import { loadRenderer } from "./app.mjs";
+import { loadRenderer } from "./attractor.mjs";
 
 let instanceRenderer: Awaited<ReturnType<Awaited<typeof loadRenderer>>>;
 
