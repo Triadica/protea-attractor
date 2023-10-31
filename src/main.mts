@@ -43,13 +43,13 @@ window.onload = async () => {
 
 if (import.meta.hot) {
   // newModule is undefined when SyntaxError happened
-  import.meta.hot.accept("./attractor.mjs", async (newModule) => {
+  import.meta.hot.accept("./attractor.mts", async (newModule) => {
     if (newModule && shape === "attractor") {
       instanceRenderer = await newModule.loadAttractorRenderer(canvas);
     }
   });
 
-  import.meta.hot.accept("./fractal.mjs", async (newModule) => {
+  import.meta.hot.accept("./fractal.mts", async (newModule) => {
     if (newModule && shape === "fractal") {
       instanceRenderer = await newModule.loadFractalRenderer(canvas);
     }

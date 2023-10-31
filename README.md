@@ -2,4 +2,7 @@
 
 > Attractors demo split out from Protea repo
 
-Previews https://webgpu.art/protea-attractor/
+Previews
+
+- Attactor https://webgpu.art/protea-attractor/
+- Fold Quaternion https://webgpu.art/protea-attractor/?shape=fractal

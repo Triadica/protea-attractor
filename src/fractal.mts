@@ -1,15 +1,18 @@
 import { createRenderer, resetCanvasSize } from "@triadica/protea";
 import fractalSprite from "../shaders/fractal-sprite.wgsl?raw";
 import fractalCompute from "../shaders/fractal-compute.wgsl?raw";
+import { wLog } from "@triadica/protea/lib/globals.mjs";
+
+let limit = 160;
 
 export let loadFractalRenderer = async (canvas: HTMLCanvasElement) => {
-  let seedSize = 6000;
+  let seedSize = Math.pow(limit, 3);
 
   let renderFrame = await createRenderer(
     canvas,
     {
       seedSize,
-      seedData: makeSeed(seedSize, 0),
+      seedData: makeSeed(seedSize),
       params: loadParams(),
       computeShader: fractalCompute,
     },
@@ -31,19 +34,34 @@ function rand_middle(n: number) {
   return n * (Math.random() - 0.5);
 }
 
-function makeSeed(numParticles: number, scale: number): Float32Array {
+function makeSeed(numParticles: number): Float32Array {
   const buf = new Float32Array(numParticles * 8);
 
-  for (let i = 0; i < numParticles; ++i) {
-    let b = 8 * i;
-    buf[b + 0] = rand_middle(4.8);
-    buf[b + 1] = rand_middle(4.8);
-    buf[b + 2] = rand_middle(4.8);
-    buf[b + 3] = rand_middle(0.8); // ages
-    buf[b + 4] = 0;
-    buf[b + 5] = 0;
-    buf[b + 6] = 0;
-    buf[b + 7] = 0; // distance
+  let counted = 0;
+  let scale = 0.8;
+  let v_scale = 2.5;
+
+  for (let xi = 0; xi < limit; ++xi) {
+    for (let yi = 0; yi < limit; ++yi) {
+      for (let zi = 0; zi < limit; ++zi) {
+        if (counted >= numParticles) {
+          break;
+        }
+        let b = 8 * counted;
+        let xr = xi / limit - 0.5;
+        let yr = yi / limit - 0.5;
+        let zr = zi / limit - 0.5;
+        buf[b + 0] = xr * scale;
+        buf[b + 1] = yr * scale;
+        buf[b + 2] = zr * scale;
+        buf[b + 3] = 0;
+        buf[b + 4] = 0.2;
+        buf[b + 5] = yr * v_scale;
+        buf[b + 6] = zr * v_scale;
+        buf[b + 7] = xr * v_scale;
+        counted++;
+      }
+    }
   }
 
   return buf;
@@ -75,16 +93,14 @@ let vertexBufferLayout: GPUVertexBufferLayout[] = [
     arrayStride: 8 * 4,
     stepMode: "instance",
     attributes: [
-      { shaderLocation: 0, offset: 0, format: "float32x3" },
-      { shaderLocation: 1, offset: 3 * 4, format: "float32" },
-      { shaderLocation: 2, offset: 4 * 4, format: "float32x3" },
-      { shaderLocation: 3, offset: 7 * 4, format: "float32" },
+      { shaderLocation: 0, offset: 0, format: "float32x4" },
+      { shaderLocation: 1, offset: 4 * 4, format: "float32x4" },
     ],
   },
   {
     // vertex buffer
     arrayStride: 1 * 4,
     stepMode: "vertex",
-    attributes: [{ shaderLocation: 4, offset: 0, format: "uint32" }],
+    attributes: [{ shaderLocation: 2, offset: 0, format: "uint32" }],
   },
 ];
