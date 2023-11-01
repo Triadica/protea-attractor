@@ -89,7 +89,7 @@ fn four_wing(p: vec3f, dt: f32) -> LorenzResult {
   );
 }
 
-/// bad
+/// ok
 fn aizawa(p: vec3f, dt: f32) -> LorenzResult {
   let a = 0.95;
   let b = 0.7;
