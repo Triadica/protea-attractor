@@ -79,18 +79,18 @@ fn vert_main(
 
   // let front = params.length;
   var width = 0.004;
-  if (!convergent) {
+  if !convergent {
     width = 0.0;
   }
 
-  if (idx == 0u) {
+  if idx == 0u {
     pos = position + right * width - up * width;
     // pos += vec3(1.,1.,1.) * 100.0;
-  } else if (idx == 1u) {
+  } else if idx == 1u {
     pos = position - right * width - up * width;
-  } else if (idx == 2u) {
+  } else if idx == 2u {
     pos = position + right * width + up * width;
-  } else if (idx == 3u) {
+  } else if idx == 3u {
     pos = position - right * width + up * width;
   } else {
     pos = position;
@@ -102,12 +102,11 @@ fn vert_main(
   let p = transform_perspective(p0.xyz).point_position;
   let scale: f32 = 0.002;
 
-  output.position = vec4(p*scale, 1.0);
+  output.position = vec4(p * scale, 1.0);
   return output;
 }
 
 @fragment
 fn frag_main() -> @location(0) vec4<f32> {
   return vec4<f32>(0.99, 0.0, 0., 0.7);
-
 }

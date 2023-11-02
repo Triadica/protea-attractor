@@ -83,23 +83,23 @@ fn vert_main(
   // let front = params.length;
   var width = params.width * 1.4;
 
-  if (ages < 0.01) {
+  if ages < 0.01 {
     // prev_position = position;
     width = 0.0;
   }
   // TODO hack
-  if (distance(position, prev_pos) > 1000.0) {
+  if distance(position, prev_pos) > 1000.0 {
     width = 0.0;
   }
 
-  if (idx == 0u) {
+  if idx == 0u {
     pos = position + right * width;
     // pos += vec3(1.,1.,1.) * 100.0;
-  } else if (idx == 1u) {
+  } else if idx == 1u {
     pos = position - right * width;
-  } else if (idx == 2u) {
+  } else if idx == 2u {
     pos = prev_position + right * width;
-  } else if (idx == 3u) {
+  } else if idx == 3u {
     pos = prev_position - right * width;
   } else {
     pos = position;
@@ -111,12 +111,12 @@ fn vert_main(
   let p = transform_perspective(p0.xyz).point_position;
   let scale: f32 = 0.002;
 
-  output.position = vec4(p*scale, 1.0);
+  output.position = vec4(p * scale, 1.0);
   // let c3: vec3<f32> = hsl(fract(travel/100.), 0.8, fract(0.9 - ages * 0.0002));
   // let c3: vec3<f32> = hsl(0.24, 0.8, 0.7 + 0.3 * sin(travel * 0.2));
   // let c3 = hsl(0.24, 0.99, 0.99 - dim);
   // let c3 = vec3<f32>(0.99, 0.94, 0.2) * (1. - ages * 0.01);
-  let c3: vec3<f32> = hsl(fract(travel * 0.000002 + 0.1), 0.998, 0.7- ages*0.002);
+  let c3: vec3<f32> = hsl(fract(travel * 0.000002 + 0.1), 0.998, 0.7 - ages * 0.002);
   output.color = vec4(c3, params.opacity * (1.2 - ages * 0.03));
   return output;
 }
